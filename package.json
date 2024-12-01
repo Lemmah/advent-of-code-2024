@@ -2,7 +2,6 @@
   "name": "advent-of-code",
   "version": "1.0.0",
   "description": "Learning JS with the Advent Of Code",
-  "main": "index.js",
   "scripts": {
     "test": "jest"
   },

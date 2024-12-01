@@ -20,6 +20,23 @@ const getDistanceApart = (left, right) => {
 }
 
 /**
+ * Get similarity score between the two lists
+ * 
+ * @param {number[]} left - first group list
+ * @param {number[]} right - second group list
+ * 
+ * @returns {number} - similarity score
+ */
+const getSimilarityScore = (left, right) => {
+  let score = 0;
+  for (const locationId of left) {
+    const countRight = right.filter(rLocationId => rLocationId === locationId).length;
+    score += (locationId * countRight);
+  }
+  return score;
+}
+
+/**
  * Parse input file to left and right list
  * 
  * @param {string} inputFilePath
@@ -42,5 +59,6 @@ async function parseInputFile(inputFilePath) {
 
 module.exports = {
   getDistanceApart,
+  getSimilarityScore,
   parseInputFile
 }
