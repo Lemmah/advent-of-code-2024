@@ -1,5 +1,5 @@
 //@ts-check
-const { isReportSafe, countSafeReports } = require('./index.js');
+const { isReportSafe, countSafeReports, isDampenedReportSafe } = require('./index.js');
 
 describe('isReportSafe', () => {
   it('should return true for safe report', () => {
@@ -46,5 +46,53 @@ describe('countSafeReports', () => {
     const reports = [];
     const safeReportsCount = countSafeReports(reports);
     expect(safeReportsCount).toBe(0);
+  });
+});
+
+describe('isDampenedReportSafe', () => {
+  it('should return true for safe report without removing levels', () => {
+    const report = [1, 3, 6, 7, 9];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #1', () => {
+    const report = [2, 5, 4, 3, 1];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #2', () => {
+    const report = [1, 5, 2, 3, 4];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #3', () => {
+    const report = [1, 2, 5, 3, 4];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #4', () => {
+    const report = [1, 2, 3, 5, 4];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #5', () => {
+    const report = [5, 5, 3, 2, 1];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #6', () => {
+    const report = [5, 4, 5, 3, 2];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return true if removing a single level makes it safe - #7', () => {
+    const report = [52, 51, 52, 49, 47, 45];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(true);
+  });
+  it('should return false if no single level removal can make the report safe', () => {
+    const report = [1, 1, 1, 1, 1];
+    const reportSafe = isDampenedReportSafe(report);
+    expect(reportSafe).toBe(false);
   });
 });
