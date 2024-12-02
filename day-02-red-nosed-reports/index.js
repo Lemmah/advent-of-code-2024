@@ -12,7 +12,7 @@ const isReportSafe = (report) => {
   let levelsAllDecreasing = true;
 
   for (let i = 1; i < report.length; i++){
-    const currentLevel = report[i], previousLevel = report[i - 1];
+    const currentLevel = Number(report[i]), previousLevel = Number(report[i - 1]);
 
     // short-circuit if level difference is unsafe
     const levelDifference = Math.abs(currentLevel - previousLevel);
@@ -24,7 +24,24 @@ const isReportSafe = (report) => {
     levelsAllDecreasing = levelsAllDecreasing && (currentLevel < previousLevel);
   }
 
-  return levelsAllDecreasing || levelsAllDecreasing;
+  return levelsAllDecreasing || levelsAllIncreasing;
 }
 
-module.exports = { isReportSafe };
+/**
+ * Count safe reports
+ * 
+ * @param {Array} reports - list of reports
+ * 
+ * @returns - count of safe reports
+ */
+const countSafeReports = (reports) => {
+  let count = 0;
+
+  for (const report of reports) {
+    if(isReportSafe(report)) count++;
+  }
+
+  return count;
+}
+
+module.exports = { isReportSafe, countSafeReports };
