@@ -28,7 +28,7 @@ const oneXMAS = (x,m,a,s) => {
  * 
  * @returns {number} - count of XMAS found
  */
-const countXmas = lines => {
+const countXMAS = lines => {
   let count = 0;
   for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
     for (let letterIndex = 0; letterIndex < lines[lineIndex].length; letterIndex++) {
@@ -71,5 +71,5 @@ const countXmas = lines => {
 }
 
 module.exports = {
-  countXmas
+  countXMAS
 }

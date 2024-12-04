@@ -1,6 +1,6 @@
 //@ts-check
 
-const {countXmas} = require('./index.js');
+const { countXMAS } = require('./index.js');
 
 describe('countXmas', () => {
   it('should count horizontal forward', () => {
@@ -8,7 +8,7 @@ describe('countXmas', () => {
       '.....XMAS.',
       '.XMAS.....'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count horizontal backwards', () => {
@@ -16,7 +16,7 @@ describe('countXmas', () => {
       '.....SAMX.',
       '.SAMX.....'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count vertical forward', () => {
@@ -26,7 +26,7 @@ describe('countXmas', () => {
       'A...A...',
       'S...S...'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count vertical backwards', () => {
@@ -36,7 +36,7 @@ describe('countXmas', () => {
       'M...M',
       'X...X'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count positive diagonal forward', () => {
@@ -46,7 +46,7 @@ describe('countXmas', () => {
       '..A...A..',
       '...S...S.'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count positive diagonal backwards', () => {
@@ -56,7 +56,7 @@ describe('countXmas', () => {
       '..M...M.',
       '...X...X'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count negative diagonal forward', () => {
@@ -66,7 +66,7 @@ describe('countXmas', () => {
       '.A...A..',
       'S...S...'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count negative diagonal backwards', () => {
@@ -76,7 +76,7 @@ describe('countXmas', () => {
       '.M...M...',
       'X...X....'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(2);
   });
   it('should count all combinations - example provided', () => {
@@ -92,7 +92,7 @@ describe('countXmas', () => {
       '..M.M.M.MM',
       '.X.X.XMASX'
     ];
-    const xmasCount = countXmas(lines);
+    const xmasCount = countXMAS(lines);
     expect(xmasCount).toBe(18);
   });
 });
