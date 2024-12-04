@@ -70,6 +70,37 @@ const countXMAS = lines => {
   return count;
 }
 
+
+/**
+ * Count X-MAS, two MAS in the shape of an X
+ * 
+ * @param {string[]} lines - lines to find X-MAS
+ * 
+ * @returns {number} - how many X-MAS
+ */
+const countMAS = lines => {
+  let count = 0;
+
+  for(let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+    for(let letterIndex = 0; letterIndex < lines[lineIndex].length; letterIndex++) {
+      const UpperLeft = lines[lineIndex][letterIndex];
+      const UpperRight = lines[lineIndex][letterIndex + 2] || '.';
+      const X = lines[lineIndex + 1]? lines[lineIndex + 1][letterIndex + 1] : '.';
+      const LowerLeft = lines[lineIndex + 2]? lines[lineIndex + 2][letterIndex] : '.';
+      const LowerRight = lines[lineIndex + 2]? lines[lineIndex + 2][letterIndex + 2] : '.';
+
+      if (X != 'A') continue;
+      if(
+        (UpperRight == 'M' && UpperLeft == 'M' && LowerRight == 'S' && LowerLeft == 'S') ||
+        (UpperRight == 'M' && UpperLeft == 'S' && LowerRight == 'M' && LowerLeft == 'S') ||
+        (UpperRight == 'S' && UpperLeft == 'S' && LowerRight == 'M' && LowerLeft == 'M') ||
+        (UpperRight == 'S' && UpperLeft == 'M' && LowerRight == 'S' && LowerLeft == 'M')
+      ) count++;
+    }
+  }
+  return count;
+}
+
 module.exports = {
-  countXMAS
+  countXMAS, countMAS
 }

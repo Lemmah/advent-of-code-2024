@@ -1,4 +1,4 @@
-const { countXMAS } = require('./index.js');
+const { countXMAS, countMAS } = require('./index.js');
 const fs = require('node:fs/promises');
 
 (async (inputFile) => {
@@ -10,4 +10,5 @@ const fs = require('node:fs/promises');
   }
 
   console.log('#1, Count XMAS:', countXMAS(lines));
+  console.log('#2, Count X-MAS:', countMAS(lines));
 })('input.txt');
