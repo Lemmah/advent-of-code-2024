@@ -1,5 +1,8 @@
 //@ts-check
-const { getMulInstructions } = require('./index.js');
+const {
+  getMulInstructions,
+  getEnabledMulInstructions
+} = require('./index.js');
 
 describe('getMulInstructions', () => {
   it('should get all valid mul instructions', () => {
@@ -43,5 +46,16 @@ describe('getMulInstructions', () => {
     const realMulInstructions = [];
     const mulInstructions = getMulInstructions(testData);
     expect(mulInstructions.length).toBe(realMulInstructions.length);
+  });
+});
+
+// getEnabledMulInstructions
+// works for the given example
+describe('getEnabledMulInstructions', () => {
+  it('should get only enabled mul instructions', () => {
+    const testData = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
+    const enabledMulInstructions = [[2,4],[8,5]];
+    const mulInstructions = getEnabledMulInstructions(testData);
+    expect(mulInstructions.length).toBe(enabledMulInstructions.length);
   });
 });

@@ -1,4 +1,4 @@
-const { getMulInstructions } = require('./index.js');
+const { getMulInstructions, getEnabledMulInstructions } = require('./index.js');
 const { open } = require('node:fs/promises');
 
 (async (inputFilePath) => {
@@ -10,5 +10,11 @@ const { open } = require('node:fs/promises');
     result += mulInstruction.groups.a * mulInstruction.groups.b;
   }
 
+  let result2 = 0;
+  for (const mulInstruction of getEnabledMulInstructions(data)) {
+    result2 += mulInstruction.groups.a * mulInstruction.groups.b;
+  }
+
   console.log('#1, Uncorrupted mul instructions:', result);
+  console.log('#2, Enabled mul instructions:', result2);
 })('input.txt');
