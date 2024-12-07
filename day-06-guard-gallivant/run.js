@@ -1,4 +1,7 @@
-const { countRoutePositions } = require('./index.js');
+const {
+  countRoutePositions,
+  countLoopingObstructions
+} = require('./index.js');
 const fs = require('node:fs/promises');
 
 (async (inputFile) => {
@@ -12,4 +15,5 @@ const fs = require('node:fs/promises');
   }
 
   console.log('#1, Count Visted Positions:', countRoutePositions(labPositions));
+  console.log('#2, Count Looping Obstructions', countLoopingObstructions(labPositions));
 })('input.txt');

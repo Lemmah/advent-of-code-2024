@@ -85,9 +85,62 @@ const countRoutePositions = labPositions => {
   return routePositions.size;
 }
 
+/**
+ * Count possible obstructions that can make guard loop
+ * 
+ * @param {string[][]} labPositions - matrix repr of lab positions 
+ * 
+ * @returns {number} - number of possible looping obstructions
+ */
+const countLoopingObstructions = labPositions => {
+  let loopingObstructions = new Set();
+  const guardInitialPosition = getGuardInitialPos(labPositions);
+  const inFrontOfGuard = move(guardInitialPosition, 'up');
+
+  for (let row = 0; row < labPositions.length; row++) {
+    for (let col = 0; col < labPositions[row].length; col++) {
+      // skip making obstraction
+      const obstruction = [row, col];
+      if (
+        JSON.stringify(obstruction) == JSON.stringify(inFrontOfGuard) ||
+        JSON.stringify(obstruction) == JSON.stringify(guardInitialPosition) ||
+        labPositions[obstruction[0]][obstruction[1]] == '#'
+      ) continue;
+
+      let turns = new Set();
+      let turnsCount = 0;
+      let guardPosition = guardInitialPosition;
+      let moveDirection = 'up';
+      let obstacle = '#';
+      labPositions[row][col] = '#'; // make obstruction
+      while(labPositions[guardPosition[0]] && labPositions[guardPosition[0]][guardPosition[1]]) {
+        const nextPosition = move(guardPosition, moveDirection);
+        if (
+          labPositions[nextPosition[0]] &&
+          labPositions[nextPosition[0]][nextPosition[1]] == obstacle
+        ) {
+          moveDirection = turn(moveDirection);
+          turns.add(`R${nextPosition[0]}C${nextPosition[1]}`);
+          turnsCount++;
+          continue;
+        }
+        guardPosition = nextPosition;
+        if(turnsCount > 3 * turns.size) {
+          loopingObstructions.add(`R${row}C${col}`);
+          break;
+        }
+      }
+      labPositions[row][col] = '.'; // remove obstruction 
+    }
+  }
+
+  return loopingObstructions.size;
+}
+
 module.exports = {
   turn,
   move,
   getGuardInitialPos,
-  countRoutePositions
+  countRoutePositions,
+  countLoopingObstructions
 };

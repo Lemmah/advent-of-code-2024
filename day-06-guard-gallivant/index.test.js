@@ -4,7 +4,8 @@ const {
   turn,
   move,
   getGuardInitialPos,
-  countRoutePositions
+  countRoutePositions,
+  countLoopingObstructions
 } = require('./index.js');
 
 describe('turn', () => {
@@ -137,5 +138,35 @@ describe('countRoutePositions', () => {
     ];
     const routePositionsCount = countRoutePositions(labPositions);
     expect(routePositionsCount).toBe(41);
+  });
+});
+
+describe('countLoopingObstructions', () => {
+  it('should count one possible looping obstruction', () => {
+    const labPositions = [
+      ['#', '#', '#', '#'],
+      ['.', '.', '.', '#'],
+      ['.', '.', '.', '#'],
+      ['.', '.', '.', '#'], // only obstruction in [3][1] will loop
+      ['^', '.', '#', '#']
+    ];
+    const routePositionsCount = countLoopingObstructions(labPositions);
+    expect(routePositionsCount).toBe(1);
+  });
+  it('should count possible looping obstructions for the provided example', () => {
+    const labPositions = [
+      ['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+      ['.', '.', '#', '.', '.', '.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.', '.', '.', '#', '.', '.'],
+      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+      ['.', '#', '.', '.', '^', '.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.', '.', '.', '.', '#', '.'],
+      ['#', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.', '.', '#', '.', '.', '.']
+    ];
+    const routePositionsCount = countLoopingObstructions(labPositions);
+    expect(routePositionsCount).toBe(6);
   });
 });
