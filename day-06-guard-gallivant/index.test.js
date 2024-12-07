@@ -92,6 +92,36 @@ describe('countRoutePositions', () => {
     const routePositionsCount = countRoutePositions(labPositions);
     expect(routePositionsCount).toBe(3);
   });
+  it('should execute all four turns correctly', () => {
+    const labPositions = [
+      ['#', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '#'],
+      ['.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.'],
+      ['^', '.', '.', '#', '.']
+    ];
+    const routePositionsCount = countRoutePositions(labPositions);
+    expect(routePositionsCount).toBe(11);
+  });
+  it('should leave mapped area right', () => {
+    const labPositions = [
+      ['#', '.', '.'],
+      ['^', '.', '.']
+    ];
+    const routePositionsCount = countRoutePositions(labPositions);
+    expect(routePositionsCount).toBe(3);
+  });
+  it('should execute all four turns correctly', () => {
+    const labPositions = [
+      ['#', '.', '.', '.', '.'],
+      ['.', '#', '.', '.', '#'],
+      ['.', '.', '.', '.', '.'],
+      ['.', '.', '.', '.', '.'],
+      ['^', '.', '.', '#', '.']
+    ];
+    const routePositionsCount = countRoutePositions(labPositions);
+    expect(routePositionsCount).toBe(4);
+  });
   it('should count provided example', () => {
     const labPositions = [
       ['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],

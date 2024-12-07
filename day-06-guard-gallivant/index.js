@@ -78,7 +78,7 @@ const countRoutePositions = labPositions => {
       moveDirection = turn(moveDirection);
       continue;
     }
-    routePositions.add(`${guardPosition[0]}${guardPosition[1]}`);
+    routePositions.add(`R${guardPosition[0]}C${guardPosition[1]}`);
     guardPosition = nextPosition;
   }
 
