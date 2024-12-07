@@ -46,8 +46,8 @@ const isUpdateInRightOrder = (update, orderingTable) => {
   let isCorrectOrder = true;
 
   for (const page of update) {
-    const pagesOutOfOrder = orderingTable[page].comesBefore.intersection(orderedPages);
-    if (pagesOutOfOrder.size !== 0) {
+    const validOrderedPages = orderingTable[page].comesBefore.isDisjointFrom(orderedPages);
+    if (!validOrderedPages) {
       isCorrectOrder = false;
       break;
     }
