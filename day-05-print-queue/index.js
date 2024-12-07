@@ -3,7 +3,6 @@
 class OrderRule {
   constructor() {
     this.comesBefore = new Set()
-    this.comesAfter = new Set()
   }
 }
 
@@ -20,14 +19,11 @@ const createOrderingTable = rules => {
   for (const rule of rules) {
     const X = rule[0];
     const Y = rule[1];
-    if (!orderingTable[X]) {
+    if (!orderingTable[X])
       orderingTable[X] = new OrderRule();
-    }
-    if (!orderingTable[Y]) {
+    if (!orderingTable[Y])
       orderingTable[Y] = new OrderRule();
-    }
     orderingTable[X].comesBefore.add(Y);
-    orderingTable[Y].comesAfter.add(X);
   }
 
   return orderingTable;

@@ -15,7 +15,6 @@ describe('createOrderingTable', () => {
     const orderingTable = createOrderingTable(rules);
     expect(orderingTable['1']).not.toBe(undefined);
     expect(orderingTable['1'].comesBefore.has(2));
-    expect(orderingTable['4'].comesAfter.has(3));
   });
 });
 
