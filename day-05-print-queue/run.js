@@ -1,4 +1,7 @@
-const { getSumPrintedMiddlePages } = require('./index.js');
+const {
+  getSumPrintedMiddlePages,
+  getSumCorrectedMiddlePages
+} = require('./index.js');
 const fs = require('node:fs/promises');
 
 (async (inputFile) => {
@@ -21,4 +24,5 @@ const fs = require('node:fs/promises');
   }
 
   console.log("#1, Middle Page Sum:", getSumPrintedMiddlePages(updates,orderingRules));
+  console.log("#2, Corrected Middle Page Sum:", getSumCorrectedMiddlePages(updates,orderingRules));
 })('input.txt');

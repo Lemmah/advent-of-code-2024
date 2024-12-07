@@ -89,9 +89,67 @@ const getSumPrintedMiddlePages = (updates, orderingRules) => {
   return sumValidMiddlePages;
 };
 
+/**
+ * Fix update if it's not in correct order
+ * 
+ * @param {number[]} update - list of pages
+ * @param {Object} orderingTable - ordering table
+ * 
+ * @returns {number[]} - update in correct order
+ */
+const getUpdateCorrectOrder = (update, orderingTable) => {
+  let orderedPages = new Set();
+
+  for (const page of update) {
+    const outOfOrder = orderingTable[page].comesBefore.intersection(orderedPages);
+    let organised = new Set();
+    if(outOfOrder.size !== 0) {
+      // @ts-ignore
+      orderedPages = orderedPages.difference(outOfOrder).add(page);
+      for (const outOfOrderPage of outOfOrder.values()) {
+        const disOrganised = orderingTable[outOfOrderPage].comesBefore.intersection(organised);
+        if (disOrganised.size !== 0) {
+          // @ts-ignore
+          organised = organised.difference(disOrganised).add(outOfOrderPage).union(disOrganised);
+        } else {
+          organised.add(outOfOrderPage);
+        }
+      }
+      // @ts-ignore
+      orderedPages = orderedPages.union(organised);
+    } else {
+      orderedPages.add(page);
+    }  
+  }
+  return [...orderedPages];
+}
+
+/**
+ * Sum up all the middle numbers of the wrongly ordered
+ * updates after ordering them correctly
+ * 
+ * @param {number[][]} updates - list of updates
+ * @param {number[][]} orderingRules - list of ordering rules
+ * @returns {number} - sum of corrected middle pages
+ */
+const getSumCorrectedMiddlePages = (updates, orderingRules) => {
+  const orderingTable = createOrderingTable(orderingRules);
+
+  let sumCorrectedMiddlePages = 0;
+  for (const update of updates) {
+    const isValidUpdate = isUpdateInRightOrder(update, orderingTable);
+    if (isValidUpdate) continue;
+    const correctedUpdate = getUpdateCorrectOrder(update, orderingTable);
+    sumCorrectedMiddlePages += getMiddlePageNumber(correctedUpdate);
+  }
+  return sumCorrectedMiddlePages;
+}
+
 module.exports = {
   createOrderingTable,
   isUpdateInRightOrder,
   getMiddlePageNumber,
-  getSumPrintedMiddlePages
+  getSumPrintedMiddlePages,
+  getUpdateCorrectOrder,
+  getSumCorrectedMiddlePages
 }
