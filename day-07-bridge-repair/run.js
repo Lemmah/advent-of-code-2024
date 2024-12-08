@@ -21,4 +21,5 @@ const fs = require('node:fs/promises');
   }
 
   console.log('#1, Total Calibration Result:', calcCalibrationResult(equations));
+  console.log('#2, Calibration Result with Concat: ', calcCalibrationResult(equations, true));
 })('input.txt');

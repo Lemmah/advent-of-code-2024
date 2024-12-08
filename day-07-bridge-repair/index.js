@@ -8,13 +8,21 @@
  * 
  * @returns {boolean} - whether equation is valid or not
  */
-const isValidEquation = (testValue, operands) => {
+const isValidEquation = (testValue, operands, concat = false) => {
   let results = operands.slice(0,1);
 
   for (const operand of operands.slice(1,)) {
     const add = results.map(each => each + operand);
     const mul = results.map(each => each * operand);
-    results = [...add, ...mul];
+    if (concat) {
+      const concat = results.map(each => {
+        const result = String(each) + String(operand);
+        return Number(result);
+      });
+      results = [...add, ...mul, ...concat];
+    } else {
+      results = [...add, ...mul];
+    }
   }
 
   return results.includes(testValue);
@@ -27,13 +35,13 @@ const isValidEquation = (testValue, operands) => {
  * 
  * @returns {number} - total valid test values
  */
-const calcCalibrationResult = equations => {
+const calcCalibrationResult = (equations, concat = false) => {
   let result = 0;
 
   for (const equation of equations) {
     const testValue = equation[0];
     const operands = equation[1];
-    if(isValidEquation(testValue,operands))
+    if(isValidEquation(testValue,operands,concat))
       result += testValue;
   }
   return result;

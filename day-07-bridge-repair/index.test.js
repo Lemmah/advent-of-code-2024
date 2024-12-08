@@ -24,6 +24,12 @@ describe('isValidEquation', () => {
     const equationIsValid = isValidEquation(testValue, operands);
     expect(equationIsValid).toBe(true);
   });
+  it('should return true for valid equation (concat) - #4', () => {
+    const testValue = 156;
+    const operands = [15, 6];
+    const equationIsValid = isValidEquation(testValue, operands, true);
+    expect(equationIsValid).toBe(true);
+  });
   it('should return false for invalid equation - #1', () => {
     const testValue = 156;
     const operands = [15, 6];
@@ -59,5 +65,20 @@ describe('calcCalibrationResult', () => {
     ];
     const totalCalibrationResult = calcCalibrationResult(equations);
     expect(totalCalibrationResult).toBe(3749);
+  });
+  it('should get total calibration result for provided example (concat)', () => {
+    const equations = [
+      [ 190, [ 10, 19 ] ],
+      [ 3267, [ 81, 40, 27 ] ],
+      [ 83, [ 17, 5 ] ],
+      [ 156, [ 15, 6 ] ],
+      [ 7290, [ 6, 8, 6, 15 ] ],
+      [ 161011, [ 16, 10, 13 ] ],
+      [ 192, [ 17, 8, 14 ] ],
+      [ 21037, [ 9, 7, 18, 13 ] ],
+      [ 292, [ 11, 6, 16, 20 ] ]
+    ];
+    const totalCalibrationResult = calcCalibrationResult(equations, true);
+    expect(totalCalibrationResult).toBe(11387);
   });
 });
