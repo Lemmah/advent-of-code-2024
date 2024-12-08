@@ -33,6 +33,23 @@ const getAllAntinodes = sameFreqAntennas => {
   return antinodes;
 }
 
+const getSameFreqAntennas = antennasMap => {
+  let sameFrequencyAntennas = {};
+  for (let i = 0; i < antennasMap.length; i++) {
+    for (let a = 0; a < antennasMap[i].length; a++) {
+      const antennaFreq = antennasMap[i][a];
+      if (antennaFreq != '.') {
+        if (!sameFrequencyAntennas[antennaFreq]) {
+          sameFrequencyAntennas[antennaFreq] = [];
+        }
+        sameFrequencyAntennas[antennaFreq].push([i,a]);
+      }
+    }
+  }
+  return sameFrequencyAntennas;
+}
+
 module.exports = {
-  getAllAntinodes
+  getAllAntinodes,
+  getSameFreqAntennas
 }

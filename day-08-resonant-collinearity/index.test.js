@@ -1,7 +1,8 @@
 // @ts-check
 
 const {
-  getAllAntinodes
+  getAllAntinodes,
+  getSameFreqAntennas
 } = require('./index.js');
 
 describe('getAllAntinodes', () => {
@@ -45,3 +46,25 @@ describe('getAllAntinodes', () => {
   });
 });
 
+describe('getSameFreqAntennas', () => {
+  it('should group 2 same frequency antennas', () => {
+    const antennasMap = [
+      ['.', 'a', '.'],
+      ['a', '.', '.']
+    ];
+    const sameFreqAntennas = getSameFreqAntennas(antennasMap);
+    expect(Object.keys(sameFreqAntennas).length).toBe(1);
+  });
+  it('should have antenna correct positions', () => {
+    const antennasMap = [
+      ['.', 'a', '.'],
+      ['a', '.', '.']
+    ];
+    const antennaPositions = [ '[0,1]', '[1,0]' ];
+    const sameFreqAntennas = getSameFreqAntennas(antennasMap);
+    const allPositionsCorrect = sameFreqAntennas['a'].every(position => {
+      return antennaPositions.includes(JSON.stringify(position));
+    });
+    expect(allPositionsCorrect).toBe(true);
+  });
+});
