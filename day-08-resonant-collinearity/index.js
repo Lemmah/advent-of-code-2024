@@ -33,6 +33,13 @@ const getAllAntinodes = sameFreqAntennas => {
   return antinodes;
 }
 
+/**
+ * Get same frequency antennas positions
+ * 
+ * @param {string[][]} antennasMap - frequencies of antennas and their position
+ * 
+ * @returns {Object} - groups of same freq antennas
+ */
 const getSameFreqAntennas = antennasMap => {
   let sameFrequencyAntennas = {};
   for (let i = 0; i < antennasMap.length; i++) {
@@ -49,7 +56,34 @@ const getSameFreqAntennas = antennasMap => {
   return sameFrequencyAntennas;
 }
 
+/**
+ * Count valid antinodes
+ * 
+ * @param {string[][]} antennasMap - frequencies of antennas and their position
+ * 
+ * @returns {number} - how many valid antinodes are created
+ */
+const countAntinodes = antennasMap => {
+  let antinodes = new Set();
+
+  const sameFreqAntennas = getSameFreqAntennas(antennasMap);
+  for(const frequency in sameFreqAntennas) {
+    const allAntinodes = getAllAntinodes(sameFreqAntennas[frequency]);
+    allAntinodes.forEach(antinode => {
+      if (
+        antennasMap[antinode[0]] &&
+        antennasMap[antinode[0]][antinode[1]]
+      ) {
+        antinodes.add(`R${antinode[0]}C${antinode[1]}`);
+      }
+    });
+  }
+
+  return antinodes.size;
+}
+
 module.exports = {
   getAllAntinodes,
-  getSameFreqAntennas
+  getSameFreqAntennas,
+  countAntinodes
 }
