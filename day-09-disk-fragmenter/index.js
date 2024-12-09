@@ -22,6 +22,37 @@ const getIndividualBlocks = denseFormatRepr => {
   return individualBlocks;
 }
 
+/**
+ * Compact blocks by removing space between them
+ * 
+ * @param {string[]} indvidualBlocks - repr of disk block
+ * 
+ * @returns {string[]} - compacted non-free blocks
+ */
+const compactFiles = indvidualBlocks => {
+  let compactedBlocks = [];
+  const nonFreeBlocksCount = indvidualBlocks.reduce((count, block) => {
+    return block !== '.' ? count+1 : count;
+  }, 0);
+
+  for (const block of indvidualBlocks) {
+    if (compactedBlocks.length == nonFreeBlocksCount) break;
+    const isFreeSpace = block == '.';
+    if (isFreeSpace) {
+      let lastBlock = indvidualBlocks.pop();
+      while (lastBlock == '.') {
+        lastBlock = indvidualBlocks.pop();
+      }
+      if(lastBlock) compactedBlocks.push(lastBlock);
+    } else {
+      compactedBlocks.push(block);
+    }
+  }
+
+  return compactedBlocks;
+}
+
 module.exports = {
-  getIndividualBlocks
+  getIndividualBlocks,
+  compactFiles
 }
