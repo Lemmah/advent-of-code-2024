@@ -25,23 +25,23 @@ const getIndividualBlocks = denseFormatRepr => {
 /**
  * Compact blocks by removing space between them
  * 
- * @param {string[]} indvidualBlocks - repr of disk block
+ * @param {string[]} individualBlocks - repr of disk block
  * 
  * @returns {string[]} - compacted non-free blocks
  */
-const compactFiles = indvidualBlocks => {
+const compactBlocks = individualBlocks => {
   let compactedBlocks = [];
-  const nonFreeBlocksCount = indvidualBlocks.reduce((count, block) => {
+  const nonFreeBlocksCount = individualBlocks.reduce((count, block) => {
     return block !== '.' ? count + 1 : count;
   }, 0);
 
-  for (const block of indvidualBlocks) {
+  for (const block of individualBlocks) {
     if (compactedBlocks.length == nonFreeBlocksCount) break;
     const isFreeSpace = block == '.';
     if (isFreeSpace) {
-      let lastBlock = indvidualBlocks.pop();
+      let lastBlock = individualBlocks.pop();
       while (lastBlock == '.') {
-        lastBlock = indvidualBlocks.pop();
+        lastBlock = individualBlocks.pop();
       }
       if(lastBlock) compactedBlocks.push(lastBlock);
     } else {
@@ -91,7 +91,7 @@ const groupFilesBySize = denseFormatRepr => {
 
 module.exports = {
   getIndividualBlocks,
-  compactFiles,
+  compactBlocks,
   calcFSChecksum,
   groupFilesBySize
 }

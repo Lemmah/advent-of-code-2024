@@ -2,7 +2,7 @@
 
 const {
   getIndividualBlocks,
-  compactFiles,
+  compactBlocks,
   calcFSChecksum,
   groupFilesBySize
 } = require('./index.js');
@@ -25,7 +25,7 @@ describe('getIndividualBlocks', () => {
   });
 });
 
-describe('compactFiles', () => {
+describe('compactBlocks', () => {
   it('should fill up free space with left most file blocks - #1', () => {
     const individualBlocks = [
       '0', '.', '.', '1',
@@ -33,7 +33,7 @@ describe('compactFiles', () => {
       '.', '.', '2', '2',
       '2', '2', '2'
     ];
-    const compactedBlocks = compactFiles(individualBlocks);
+    const compactedBlocks = compactBlocks(individualBlocks);
     expect(compactedBlocks.join('')).toBe('022111222');
   });
   it('should fill up free space with left most file blocks - #2', () => {
@@ -45,7 +45,7 @@ describe('compactFiles', () => {
       '6', '6', '6', '.', '7', '7', '7',
       '.', '8', '8', '8', '8', '9', '9'
     ];
-    const compactedBlocks = compactFiles(individualBlocks);
+    const compactedBlocks = compactBlocks(individualBlocks);
     expect(compactedBlocks.join('')).toBe('0099811188827773336446555566');
   });
 });
