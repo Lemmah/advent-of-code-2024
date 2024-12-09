@@ -63,7 +63,7 @@ const calcFSChecksum = compactedBlocks => {
   let checksum = 0;
   compactedBlocks.forEach((fileId, position) => {
     checksum += position * Number(fileId);
-  })
+  });
 
   return checksum;
 }
