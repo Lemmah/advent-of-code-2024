@@ -3,7 +3,8 @@
 const {
   getIndividualBlocks,
   compactFiles,
-  calcFSChecksum
+  calcFSChecksum,
+  groupFilesBySize
 } = require('./index.js');
 
 describe('getIndividualBlocks', () => {
@@ -60,5 +61,24 @@ describe('calcFSChecksum', () => {
     ];
     const fileSystemChecksum = calcFSChecksum(compactedBlocks);
     expect(fileSystemChecksum).toBe(1928)
+  });
+});
+
+describe('groupFilesBySize', () => {
+  it('should have all sizes in map', () => {
+    const denseFormatRepr = [ '1', '2', '3', '4', '5' ];
+    const filesBySize = groupFilesBySize(denseFormatRepr);
+    const availableSizes = [0,1,2,3,4,5,6,7,8,9];
+    expect(Object.keys(filesBySize).length).toBe(availableSizes.length);
+  });
+  it('should have correct sizes in map - #1', () => {
+    const denseFormatRepr = [ '1', '2', '3', '4', '5' ];
+    const filesBySize = groupFilesBySize(denseFormatRepr);
+    const sizesWithFileIds = ['1', '3', '5'];
+    sizesWithFileIds.forEach(size => {
+      const filesOfThisSize = filesBySize[size]
+      expect(filesOfThisSize).not.toBe(undefined);
+      expect(filesOfThisSize.length).toBe(1);
+    });
   });
 });
