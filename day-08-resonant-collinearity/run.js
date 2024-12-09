@@ -10,4 +10,5 @@ const fs = require('node:fs/promises');
   }
 
   console.log('#1, Count Antinodes:', countAntinodes(antennasMap));
+  console.log('#2, Count Antinodes Harmonized:', countAntinodes(antennasMap, true));
 })('input.txt');

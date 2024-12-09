@@ -7,26 +7,36 @@
  * 
  * @returns {number[][]} - all antinodes positions
  */
-const getAllAntinodes = sameFreqAntennas => {
+const getAllAntinodes = (sameFreqAntennas, rHarmonics = false, mapSize = 50) => {
   let antinodes = [];
+  mapSize = rHarmonics ? mapSize : 1;
 
   for (let aIndex = 0; aIndex < sameFreqAntennas.length; aIndex++) {
     const firstAntenna = sameFreqAntennas[aIndex];
     for (const secondAntenna of sameFreqAntennas.slice(aIndex + 1,)) {
-      const distanceApart = [
+      let distanceApart = [
         firstAntenna[0] - secondAntenna[0],
         firstAntenna[1] - secondAntenna[1]
       ];
-      const doubleDistanceApart = distanceApart.map(distance => distance * 2);
-      const firstAntinode = [
-        firstAntenna[0] - doubleDistanceApart[0],
-        firstAntenna[1] - doubleDistanceApart[1]
-      ];
-      const secondAntinode = [
-        secondAntenna[0] + doubleDistanceApart[0],
-        secondAntenna[1] + doubleDistanceApart[1]
-      ];
-      antinodes.push(firstAntinode, secondAntinode);
+
+      if(!rHarmonics)
+        distanceApart = distanceApart.map(distance => distance * 2);
+
+      let firstAntinode;
+      let secondAntinode;
+      let c = mapSize;
+      while (c > 0) {
+        firstAntinode = [
+          firstAntenna[0] - (c * distanceApart[0]),
+          firstAntenna[1] - (c * distanceApart[1])
+        ];
+        secondAntinode = [
+          secondAntenna[0] + (c * distanceApart[0]),
+          secondAntenna[1] + (c * distanceApart[1])
+        ];
+        antinodes.push(firstAntinode, secondAntinode);
+        c--;
+      }
     }
   }
 
@@ -63,12 +73,12 @@ const getSameFreqAntennas = antennasMap => {
  * 
  * @returns {number} - how many valid antinodes are created
  */
-const countAntinodes = antennasMap => {
+const countAntinodes = (antennasMap, rHarmonics = false) => {
   let antinodes = new Set();
 
   const sameFreqAntennas = getSameFreqAntennas(antennasMap);
   for(const frequency in sameFreqAntennas) {
-    const allAntinodes = getAllAntinodes(sameFreqAntennas[frequency]);
+    const allAntinodes = getAllAntinodes(sameFreqAntennas[frequency], rHarmonics);
     allAntinodes.forEach(antinode => {
       if (
         antennasMap[antinode[0]] &&
