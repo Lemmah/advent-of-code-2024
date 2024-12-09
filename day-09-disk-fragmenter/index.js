@@ -52,7 +52,24 @@ const compactFiles = indvidualBlocks => {
   return compactedBlocks;
 }
 
+/**
+ * Calculate checksum for compacted blocks
+ * 
+ * @param {string[]} compactedBlocks - compacted non-free blocks
+ * 
+ * @returns {number} - the checksum
+ */
+const calcFSChecksum = compactedBlocks => {
+  let checksum = 0;
+  compactedBlocks.forEach((fileId, position) => {
+    checksum += position * Number(fileId);
+  })
+
+  return checksum;
+}
+
 module.exports = {
   getIndividualBlocks,
-  compactFiles
+  compactFiles,
+  calcFSChecksum
 }

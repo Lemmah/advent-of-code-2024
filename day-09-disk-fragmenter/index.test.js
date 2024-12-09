@@ -2,7 +2,8 @@
 
 const {
   getIndividualBlocks,
-  compactFiles
+  compactFiles,
+  calcFSChecksum
 } = require('./index.js');
 
 describe('getIndividualBlocks', () => {
