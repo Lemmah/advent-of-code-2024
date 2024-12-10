@@ -62,7 +62,8 @@ const compactBlocks = individualBlocks => {
 const calcFSChecksum = compactedBlocks => {
   let checksum = 0;
   compactedBlocks.forEach((fileId, position) => {
-    checksum += position * Number(fileId);
+    const fileIdNotSpace = !isNaN(Number(fileId))
+    if(fileIdNotSpace) checksum += position * Number(fileId);
   });
 
   return checksum;
@@ -78,20 +79,80 @@ const calcFSChecksum = compactedBlocks => {
 const groupFilesBySize = denseFormatRepr => {
   let filesBySize = {
     '0': [], '1': [], '2': [], '3': [], '4': [],
-    '5': [], '6': [], '7': [], '8': [], '9': []
+    '5': [], '6': [], '7': [], '8': [], '9': [],
+    'sizesInOrder': []
   }
 
-  denseFormatRepr.forEach((block, position) => {
+  denseFormatRepr.forEach((size, position) => {
     const isFreeSpace = position % 2 !== 0;
-    if (!isFreeSpace) filesBySize[block].push(position/2);
+    if (!isFreeSpace){
+      filesBySize[size].push(position/2);
+      // @ts-ignore
+      filesBySize['sizesInOrder'].push(size)
+    }
   });
 
   return filesBySize;
+}
+
+/**
+ * Compact files by moving them to free blocks if possible 
+ * 
+ * @param {string[]} denseFormatRepr - dense format repr of disk
+ * 
+ * @returns {string[]} - compacted files
+ */
+const compactFiles = denseFormatRepr => {
+  const filesBySize = groupFilesBySize(denseFormatRepr);
+  const reversedSizes = filesBySize.sizesInOrder.reverse();
+  let compactedFiles = [];
+  denseFormatRepr.forEach((size, position) => {
+    const isFreeSpace = position % 2 !== 0;
+    if(isFreeSpace) {
+      let freeSpaceSize = Number(size);
+      for (let i = 0; i < reversedSizes.length; i++) {
+        if (freeSpaceSize == 0) break;
+        if (Number(reversedSizes[i]) <= freeSpaceSize) {
+          freeSpaceSize -= Number(reversedSizes[i])
+          const fileId = filesBySize[reversedSizes[i]].pop();
+          if(fileId !== undefined) {
+            let count = Number(reversedSizes[i]);
+            while(count > 0) {
+              compactedFiles.push(String(fileId));
+              count--;
+            }
+          }
+          reversedSizes.splice(i, 1);
+        }
+      }
+      while(freeSpaceSize > 0) {
+        compactedFiles.push('.');
+        freeSpaceSize--;
+      }
+    } else {
+      const fileId = filesBySize[size].shift();
+      let count = Number(size);
+      if(fileId !== undefined) {
+        while(count > 0) {
+          compactedFiles.push(String(fileId));
+          count--;
+        }
+      } else {
+        while(count > 0) {
+          compactedFiles.push('.');
+          count--;
+        }
+      }
+    }
+  });
+
+  return compactedFiles;
 }
 
 module.exports = {
   getIndividualBlocks,
   compactBlocks,
   calcFSChecksum,
-  groupFilesBySize
+  groupFilesBySize,
+  compactFiles
 }
