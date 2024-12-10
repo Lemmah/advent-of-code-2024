@@ -4,7 +4,8 @@ const {
   getIndividualBlocks,
   compactBlocks,
   calcFSChecksum,
-  groupFilesBySize
+  groupFilesBySize,
+  compactFiles
 } = require('./index.js');
 
 describe('getIndividualBlocks', () => {
@@ -68,7 +69,11 @@ describe('groupFilesBySize', () => {
   it('should have all sizes in map', () => {
     const denseFormatRepr = [ '1', '2', '3', '4', '5' ];
     const filesBySize = groupFilesBySize(denseFormatRepr);
-    const availableSizes = [0,1,2,3,4,5,6,7,8,9];
+    const availableSizes = [
+      '0', '1', '2', '3',
+      '4', '5', '6', '7',
+      '8', '9', 'sizesInOrder'
+    ];
     expect(Object.keys(filesBySize).length).toBe(availableSizes.length);
   });
   it('should have correct sizes in map - #1', () => {
@@ -80,5 +85,18 @@ describe('groupFilesBySize', () => {
       expect(filesOfThisSize).not.toBe(undefined);
       expect(filesOfThisSize.length).toBe(1);
     });
+  });
+});
+
+describe('compactFiles', () => {
+  it('should compact by files as in example - #1', () => {
+    const denseFormatRepr = [
+      '2', '3', '3', '3', '1',
+      '3', '3', '1', '2', '1',
+      '4', '1', '4', '1', '3',
+      '1', '4', '0', '2'
+    ];
+    const compactedFiles = compactFiles(denseFormatRepr);
+    expect(compactedFiles.join('')).toBe('00992111777.44.333....5555.6666.....8888..');
   });
 });
