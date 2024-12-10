@@ -39,6 +39,28 @@ const getTrailheadScore = (trailheadPosition, topographicMap) => {
   return score;
 }
 
+/**
+ * Calculate the total trailheads scores
+ * 
+ * @param {number[][]} topographicMap - map with all trailheads
+ * 
+ * @returns {number} - total trailheads scores
+ */
+const getTotalTrailheadsScores = topographicMap => {
+  let totalTrailheadsScores = 0;
+
+  topographicMap.forEach((row, rIndex) => {
+    row.forEach((position, pIndex) => {
+      const isTrailhead = Number(position) == 0;
+      totalTrailheadsScores += isTrailhead ? 
+      getTrailheadScore(`${rIndex},${pIndex}`, topographicMap) : 0;
+    })
+  });
+
+  return totalTrailheadsScores;
+}
+
 module.exports = {
-  getTrailheadScore
+  getTrailheadScore,
+  getTotalTrailheadsScores
 }

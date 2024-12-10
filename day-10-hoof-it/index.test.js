@@ -1,7 +1,8 @@
 // @ts-check
 
 const {
-  getTrailheadScore
+  getTrailheadScore,
+  getTotalTrailheadsScores
 } = require('./index.js');
 
 describe('getTrailheadScore', () => {
@@ -181,5 +182,47 @@ describe('getTrailheadScore', () => {
     const trailheadPosition = '0,2';
     const trailheadScore = getTrailheadScore(trailheadPosition, topographicMap);
     expect(trailheadScore).toBe(5);
+  });
+});
+
+
+describe('getTotalTrailheadsScores', () =>  {
+  it('should get total scores for provided example', () => {
+    const topographicMap = [
+      [
+        8, 9, 0, 1,
+        0, 1, 2, 3
+      ],
+      [
+        7, 8, 1, 2,
+        1, 8, 7, 4
+      ],
+      [
+        8, 7, 4, 3,
+        0, 9, 6, 5
+      ],
+      [
+        9, 6, 5, 4,
+        9, 8, 7, 4
+      ],
+      [
+        4, 5, 6, 7,
+        8, 9, 0, 3
+      ],
+      [
+        3, 2, 0, 1,
+        9, 0, 1, 2
+      ],
+      [
+        0, 1, 3, 2,
+        9, 8, 0, 1
+      ],
+      [
+        1, 0, 4, 5,
+        6, 7, 3, 2
+      ]
+    ];
+    const totalTrailheadsScores = getTotalTrailheadsScores(topographicMap);
+    expect(totalTrailheadsScores).toBe(36);
   });
 });
