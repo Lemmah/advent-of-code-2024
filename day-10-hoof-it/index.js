@@ -8,11 +8,11 @@
  * 
  * @returns {number} - the score (number of complete trails)
  */
-const getTrailheadScore = (trailheadPosition, topographicMap) => {
-  let positions = new Set([trailheadPosition]);
+const getTrailheadScore = (trailheadPosition, topographicMap, scoreRating = false) => {
+  let positions = [trailheadPosition];
   let score = 0;
-  while (positions.size) {
-    const nextPositions = new Set();
+  while (positions.length) {
+    const nextPositions = [];
     for (const position of positions) {
       const [x, y] = position.split(',').map(pos => Number(pos));
       const height = topographicMap[x][y];
@@ -30,7 +30,9 @@ const getTrailheadScore = (trailheadPosition, topographicMap) => {
           topographicMap[x] &&
           topographicMap[x][y] - height === 1
         ) {
-          nextPositions.add(pos);
+          if (!nextPositions.includes(pos) || scoreRating) {
+            nextPositions.push(pos);
+          }
         }
       });
     }
@@ -46,14 +48,14 @@ const getTrailheadScore = (trailheadPosition, topographicMap) => {
  * 
  * @returns {number} - total trailheads scores
  */
-const getTotalTrailheadsScores = topographicMap => {
+const getTotalTrailheadsScores = (topographicMap, scoreRatings = false) => {
   let totalTrailheadsScores = 0;
 
   topographicMap.forEach((row, rIndex) => {
     row.forEach((position, pIndex) => {
       const isTrailhead = Number(position) == 0;
       totalTrailheadsScores += isTrailhead ? 
-      getTrailheadScore(`${rIndex},${pIndex}`, topographicMap) : 0;
+      getTrailheadScore(`${rIndex},${pIndex}`, topographicMap, scoreRatings) : 0;
     })
   });
 
