@@ -111,4 +111,19 @@ describe('compactFiles', () => {
     const compactedFiles = compactFiles(denseFormatRepr);
     expect(compactedFiles.join('')).toBe('00992111777.44.333....5555.6666.....8888..');
   });
+  it('should compact by files as in example - #2', () => {
+    const denseFormatRepr = [ '1', '2', '3', '4', '5' ];
+    const compactedFiles = compactFiles(denseFormatRepr);
+    expect(compactedFiles.join('')).toBe('0..111....22222');
+  });
+  it('should compact by files if only free space - #3', () => {
+    const denseFormatRepr = [ '0', '2', '0', '4', '0' ];
+    const compactedFiles = compactFiles(denseFormatRepr);
+    expect(compactedFiles.join('')).toBe('......');
+  });
+  it('should compact by files if no free space - #4', () => {
+    const denseFormatRepr = [ '1', '0', '2', '0', '3' ];
+    const compactedFiles = compactFiles(denseFormatRepr);
+    expect(compactedFiles.join('')).toBe('011222');
+  });
 });

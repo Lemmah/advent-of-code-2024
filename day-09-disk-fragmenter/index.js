@@ -113,9 +113,9 @@ const compactFiles = denseFormatRepr => {
       for (let i = 0; i < reversedSizes.length; i++) {
         if (freeSpaceSize == 0) break;
         if (Number(reversedSizes[i]) <= freeSpaceSize) {
-          freeSpaceSize -= Number(reversedSizes[i])
           const fileId = filesBySize[reversedSizes[i]].pop();
           if(fileId !== undefined) {
+            freeSpaceSize -= Number(reversedSizes[i])
             let count = Number(reversedSizes[i]);
             while(count > 0) {
               compactedFiles.push(String(fileId));
