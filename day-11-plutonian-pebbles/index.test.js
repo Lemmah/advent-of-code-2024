@@ -3,7 +3,8 @@
 const {
   transformStone,
   transformStones,
-  blinkAndCountStones
+  blinkAndCountStones,
+  transformStoneAndCount
 } = require('./index.js');
 
 describe('transformStone', () => {
@@ -60,6 +61,29 @@ describe('transformStones', () => {
       expect(stone).toBe(expectedTransformed[position]);
     })
   });
+});
+
+describe('transformStoneAndCount', () => {
+  it('should count 1 stone for zero blinks', () => {
+    const stone = 0;
+    const count = transformStoneAndCount(stone, 0);
+    expect(count).toBe(1);
+  });
+  it('should count 1 if first blink does not split', () => {
+    const stone = 0;
+    const count = transformStoneAndCount(stone, 1);
+    expect(count).toBe(1);
+  });
+  it('should count 2 if first blink splits', () => {
+    const stone = 99;
+    const count = transformStoneAndCount(stone, 1);
+    expect(count).toBe(2);
+  });
+  it('should count 4 for second blink of 12121212', () => {
+    const stone = 12121212;
+    const count = transformStoneAndCount(stone, 2);
+    expect(count).toBe(4);
+  })
 });
 
 describe('blinkAndCountStones', () => {

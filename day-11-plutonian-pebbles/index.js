@@ -36,21 +36,40 @@ const transformStones = stones => {
 }
 
 /**
+ * Transform and count stones without array
+ * 
+ * @param {number} stone - stone engraving
+ * @param {number} blinks - number of blinks
+ * 
+ * @returns {number} - number of stones after transformations
+ */
+const transformStoneAndCount = (stone, blinks) => {
+  if (blinks === 0) return 1;
+
+  const transform = transformStone(stone);
+  const increment = transform.length - 1;
+  if (increment === 1) {
+    return transformStoneAndCount(transform[0], blinks - 1) + transformStoneAndCount(transform[1], blinks - 1);
+  }
+  return transformStoneAndCount(transform[0], blinks - 1);
+}
+/**
  * 
  * @param {number[]} stones - line of stones
  * @param {number} blinks - number of blinks
  * @returns {number} - count of stones
  */
 const blinkAndCountStones = (stones, blinks) => {
-  if (blinks === 0) return stones.length;
-  return blinkAndCountStones(
-    transformStones(stones),
-    blinks - 1
-  );
+  let count = 0;
+  for (const stone of stones) {
+    count += transformStoneAndCount(stone, blinks);
+  }
+  return count;
 }
 
 module.exports = {
   transformStone,
   transformStones,
-  blinkAndCountStones
+  blinkAndCountStones,
+  transformStoneAndCount
 }
