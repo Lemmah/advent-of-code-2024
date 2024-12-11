@@ -35,7 +35,22 @@ const transformStones = stones => {
   return transformed;
 }
 
+/**
+ * 
+ * @param {number[]} stones - line of stones
+ * @param {number} blinks - number of blinks
+ * @returns {number} - count of stones
+ */
+const blinkAndCountStones = (stones, blinks) => {
+  if (blinks === 0) return stones.length;
+  return blinkAndCountStones(
+    transformStones(stones),
+    blinks - 1
+  );
+}
+
 module.exports = {
   transformStone,
-  transformStones
+  transformStones,
+  blinkAndCountStones
 }

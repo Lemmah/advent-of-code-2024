@@ -2,7 +2,8 @@
 
 const {
   transformStone,
-  transformStones
+  transformStones,
+  blinkAndCountStones
 } = require('./index.js');
 
 describe('transformStone', () => {
@@ -58,5 +59,38 @@ describe('transformStones', () => {
     transformed.forEach((stone, position) => {
       expect(stone).toBe(expectedTransformed[position]);
     })
+  });
+});
+
+describe('blinkAndCountStones', () => {
+  const stones = [125, 17];
+
+  it('should transform stones - 1 blink', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 1);
+    expect(stonesAfterBlinking).toBe(3);
+  });
+  it('should transform stones - 2 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 2);
+    expect(stonesAfterBlinking).toBe(4);
+  });
+  it('should transform stones - 3 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 3);
+    expect(stonesAfterBlinking).toBe(5);
+  });
+  it('should transform stones - 4 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 4);
+    expect(stonesAfterBlinking).toBe(9);
+  });
+  it('should transform stones - 5 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 5);
+    expect(stonesAfterBlinking).toBe(13);
+  });
+  it('should transform stones - 6 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 6);
+    expect(stonesAfterBlinking).toBe(22);
+  });
+  it('should transform stones - 25 blinks', () => {
+    const stonesAfterBlinking = blinkAndCountStones(stones, 25);
+    expect(stonesAfterBlinking).toBe(55312);
   });
 });
