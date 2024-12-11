@@ -36,23 +36,41 @@ const transformStones = stones => {
 }
 
 /**
- * Transform and count stones without array
- * 
- * @param {number} stone - stone engraving
- * @param {number} blinks - number of blinks
- * 
- * @returns {number} - number of stones after transformations
+ * Memoize Transform and count stones
  */
-const transformStoneAndCount = (stone, blinks) => {
-  if (blinks === 0) return 1;
+const transformStoneAndCount = (() => {
+  const memo = new Map();
 
-  const transform = transformStone(stone);
-  const increment = transform.length - 1;
-  if (increment === 1) {
-    return transformStoneAndCount(transform[0], blinks - 1) + transformStoneAndCount(transform[1], blinks - 1);
+  /**
+   * Transform and count stones without array
+   * 
+   * @param {number} stone - stone engraving
+   * @param {number} blinks - number of blinks
+   * 
+   * @returns {number} - number of stones after transformations
+   */
+  const memoTransformStoneAndCount = (stone, blinks) => {
+    if (blinks === 0) return 1;
+    const key = `${stone}-${blinks}`;
+    let result = memo.get(key);
+    if (result) return result;
+  
+    const transform = transformStone(stone);
+    const increment = transform.length - 1;
+    if (increment === 1) {
+      result = memoTransformStoneAndCount(transform[0], blinks - 1) + memoTransformStoneAndCount(transform[1], blinks - 1);
+    } else {
+      result = memoTransformStoneAndCount(transform[0], blinks - 1);
+    }
+
+    memo.set(key, result);
+
+    return result;
   }
-  return transformStoneAndCount(transform[0], blinks - 1);
-}
+
+  return memoTransformStoneAndCount;
+})();
+
 /**
  * 
  * @param {number[]} stones - line of stones
@@ -60,11 +78,10 @@ const transformStoneAndCount = (stone, blinks) => {
  * @returns {number} - count of stones
  */
 const blinkAndCountStones = (stones, blinks) => {
-  let count = 0;
-  for (const stone of stones) {
-    count += transformStoneAndCount(stone, blinks);
-  }
-  return count;
+  if (stones.length === 0) return 0;
+  const firstStone = stones[0];
+  const remainingStones = stones.slice(1,);
+  return transformStoneAndCount(firstStone, blinks) + blinkAndCountStones(remainingStones, blinks);
 }
 
 module.exports = {
