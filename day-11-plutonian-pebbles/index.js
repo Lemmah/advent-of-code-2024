@@ -22,6 +22,20 @@ const transformStone = stone => {
   return [stone * 2024];
 }
 
+/**
+ * Transform stones in line according to rules
+ * 
+ * @param {number[]} stones - array of stones in straight line
+ * 
+ * @returns {number[]} - transformed stones
+ */
+const transformStones = stones => {
+  let transformed = [];
+  stones.forEach(stone => transformed.push(...transformStone(stone)));
+  return transformed;
+}
+
 module.exports = {
-  transformStone
+  transformStone,
+  transformStones
 }
